@@ -17,22 +17,20 @@ def create_footer(topic):
     pdf.set_text_color(100, 180, 100)
     pdf.cell(w=0, h=10, txt=row["Topic"], align="R")
 
-def create_lines(y_position):
-    pdf.line(10, y_position, 200, y_position)
+def create_lines(start_y=20, end_y=290, step=10):
+    for y in range(start_y, end_y, step):
+        pdf.line(10, y, 200, y)
 
 for _, row in df.iterrows():
     # Header
     pdf.add_page()
     create_header(row["Topic"])
-    for y in range(20, 290, 10):        
-        create_lines(y)
-
+    create_lines()
     create_footer(row["Topic"])
 
     for _ in range(row["Pages"] - 1):
-        pdf.add_page()
-        for y in range(20, 290, 10):        
-            create_lines(y)
+        pdf.add_page()      
+        create_lines()
         create_footer(row["Topic"])
 
 pdf.output("output.pdf")
